@@ -47,6 +47,7 @@ class HashTable{
         void displayHashTable();
 };
 
+//Initialize the HashTable
 HashTable::HashTable(int table_size){
     TABLE_SIZE = table_size;
     PRIME = nearestPrime(TABLE_SIZE);
@@ -56,22 +57,23 @@ HashTable::HashTable(int table_size){
         table[i] = NULL;
 }
 
+//Method used to insert a node into the HashTable
 void HashTable::put(int key, node *value){
     if(isFull()){
         return;
     }
-    int hash = hashFunc1(key);
+    int hash = hashFunc1(key); //Calculating the initial hash
     
-    if(table[hash]!=NULL){
-        int offset = hashFunc2(key);
-        if(table[hash]->getKey() == -2){
+    if(table[hash]!=NULL){ 
+        int offset = hashFunc2(key); //Generating the offset 
+        if(table[hash]->getKey() == -2){//If in the current position is stored an eliminated value, than insert the node here
             table[hash] = new HashNode(key, value);
             size_current++;
             return;
         }
         for(int i = 1; i < TABLE_SIZE; i++){
-            int newHash = (hash + i * offset) % TABLE_SIZE;
-            if(table[newHash]==NULL){
+            int newHash = (hash + i * offset) % TABLE_SIZE; //Creating a new hash by using the old hash and the offset
+            if(table[newHash]==NULL){//If the position is empty than insert the node here
                 table[newHash] = new HashNode(key, value);
                 break;
             }
@@ -84,20 +86,21 @@ void HashTable::put(int key, node *value){
 
 }
 
+/* Method used to search an element in the HashTable given his key, it can return an expected value that is the node stored in 
+that position, or an unexpected value an error code stored into an integer*/
 tl::expected<node, int> HashTable::searchValue(int key){
     int hash1 = hashFunc1(key);
     int hash2 = hashFunc2(key);
     if(table[(hash1 + 0*hash2)%TABLE_SIZE] == NULL){
-        return tl::unexpected(-1);
+        return tl::unexpected(-1); //If the value in that position is NULL, than return an unexpected value of -1
     }
 
     if(table[(hash1 + 0*hash2)%TABLE_SIZE]->getKey() == -2)
-        return tl::unexpected(-2);
+        return tl::unexpected(-2); //If the key of the element in that position is -2, than return an unexpected value of -2
 
     int i = 0;
     while(table[(hash1 + i*hash2)%TABLE_SIZE]->getKey() != key){
         if(table[(hash1 + i*hash2)%TABLE_SIZE] == NULL){
-            cout << "Sono nella ricerca";
             return tl::unexpected(-1);
         }
         i++;
@@ -105,17 +108,18 @@ tl::expected<node, int> HashTable::searchValue(int key){
     return table[(hash1 + i*hash2)%TABLE_SIZE]->getValue();
 }
 
+//Method used to delete an HashNode from the HashTable
 void HashTable::deleteNode(int key){
     int hash1 = hashFunc1(key);
     int hash2 = hashFunc2(key);
     
-    if(table[(hash1 + 0*hash2)%TABLE_SIZE] == NULL){
+    if(table[(hash1 + 0*hash2)%TABLE_SIZE] == NULL){ //If the value in that position is NULL, than return
         return;
     }
 
 
     int i = 0;
-    while(table[(hash1 + i*hash2)%TABLE_SIZE]->getKey() != key){
+    while(table[(hash1 + i*hash2)%TABLE_SIZE]->getKey() != key){ //Exploring all the HashTable until dont find the given key
         if(table[(hash1 + i*hash2)%TABLE_SIZE] == NULL){
             return;
         }
@@ -123,13 +127,6 @@ void HashTable::deleteNode(int key){
     }
     table[(hash1 + i*hash2)%TABLE_SIZE] = new HashNode(-2, new node(-1, -1, false, -1, -1, "boh"));
 }
-
-// void HashTable::displayHashTable(){
-//     for(int i = 0; i < TABLE_SIZE; i++){
-//         //node value = table[i]->getValue();
-//         cout << "* Row" << i << " Key-->" << table[i]->getKey() << "Value-->" << table[i]->getValue().getValue() << "*" << endl;
-//     }
-// }
 
 bool HashTable::isFull(){
     if(size_current == TABLE_SIZE){
