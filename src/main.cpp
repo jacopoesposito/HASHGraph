@@ -2,6 +2,8 @@ using namespace std;
 #include "iostream"
 #include <iomanip>
 #include <limits>
+#include <fstream>
+#include <filesystem>
 #include "hashtable.hpp"
 #include "node.hpp"
 #include "../lib/expected.hpp"
@@ -24,15 +26,50 @@ void displaymenu(){
 int main(){
     const char * welcomeMessage = "\n\n Benvenuti in HashGraph, memorizza e gestisci un grafo orientato grazie ad una hash table";
     bool exec = true;
-    int scelta;
-    cout << welcomeMessage;
+    string inputFile, input1;
+    char buffer[256];
 
-    int nodeValue, nodeDestination, key;
-    HashTable *table = new HashTable();
+    int nodeValue, nodeDestination, key, scelta, userInputDimensionTable, fileDimensionTable;
     node *value;
     tl::expected<node, int> returnedValue;
     node rvalue;
+
+    cout << welcomeMessage;
+
+    cout << "\n\nScegli il file di input-> ";
+    cin >> inputFile;
+
+    ifstream file;
+    file.open(inputFile);
+
+    if(!file.is_open()){
+        cout << "File doesn't exist";
+        return -1;
+    }
+
     
+    cout << "\n\nInserisci dimensione HashTable-> ";
+    cin >> userInputDimensionTable;
+    file  >> input1;
+    fileDimensionTable = stoi(input1);
+    cout << "Numero nodi presenti nel file di input->" << fileDimensionTable << endl;
+
+    if(userInputDimensionTable < fileDimensionTable){
+        cout << "\n Errore tabella di Hashing troppo piccola per contenere i dati di input!" << endl;
+        return -3;
+    }
+
+    HashTable *table = new HashTable(userInputDimensionTable);
+
+    file.getline(buffer, 256);
+    int i = 1;
+    string idNode, destinationNode;
+    
+    while(file >> idNode >> destinationNode){
+        table->put(i, new node(stoi(idNode), stoi(destinationNode), false, -1, -1, "white"));
+        i++;
+    }
+
     displaymenu();
     
     do{
@@ -43,7 +80,7 @@ int main(){
             {
                 cout << "Aggiungi nodo su HT" << endl;
                 cout << "Composizione nodo: " << endl;
-                cout << "Inserisci identificativo nodo-> ";
+                cout << "\nInserisci identificativo nodo-> ";
                 cin >> nodeValue;
                 cout << "\nInserisci identicativo nodo destinazione-> ";
                 cin >> nodeDestination;
@@ -54,7 +91,7 @@ int main(){
                 table->put(key, value);
                 returnedValue = table->searchValue(key);
                 rvalue = returnedValue.value();
-                cout << rvalue.getColor();
+                cout << "Nodo aggiunto con successo ad HT" << endl;
             break;
             }
             case 2:

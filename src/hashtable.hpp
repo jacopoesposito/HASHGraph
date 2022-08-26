@@ -1,6 +1,7 @@
 using namespace std;
 #include "node.hpp"
 #include "../lib/expected.hpp"
+#include <math.h>
 #include <stdexcept>
 
 #ifndef hashtable_hpp
@@ -27,16 +28,18 @@ class HashNode{
         int key;
 };
 
-const int TABLE_SIZE = 128;
-
 class HashTable{
     private:
         HashNode **table;
         bool isFull();
+        int TABLE_SIZE;
+        int PRIME;
         int hashFunc1(int key);
         int hashFunc2(int key);
+        int nearestPrime(int table_size);
     public:
         int size_current;
+        HashTable(int table_size);
         HashTable();
         tl::expected<node, int> searchValue(int key);
         void put(int key, node *value);
@@ -44,7 +47,10 @@ class HashTable{
         void displayHashTable();
 };
 
-HashTable::HashTable(){
+HashTable::HashTable(int table_size){
+    TABLE_SIZE = table_size;
+    PRIME = nearestPrime(TABLE_SIZE);
+    cout << "Valore Prime: " << PRIME << endl;
     table = new HashNode*[TABLE_SIZE];
     for (int i = 0; i < TABLE_SIZE; i++)
         table[i] = NULL;
@@ -139,7 +145,29 @@ int HashTable::hashFunc1(int key){
 }
 
 int HashTable::hashFunc2(int key){
-    return (127 - (key % TABLE_SIZE));
+    return (PRIME - (key % TABLE_SIZE));
+}
+
+int HashTable::nearestPrime(int table_size){
+    // All prime numbers are odd except two
+    if (table_size & 1)
+        table_size -= 2;
+    else
+        table_size--;
+ 
+    int i, j;
+    for (i = table_size; i >= 2; i -= 2) {
+        if (i % 2 == 0)
+            continue;
+        for (j = 3; j <= sqrt(i); j += 2) {
+            if (i % j == 0)
+                break;
+        }
+        if (j > sqrt(i))
+            return i;
+    }
+    // It will only be executed when n is 3
+    return 2;
 }
 
 #endif
