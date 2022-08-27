@@ -36,8 +36,6 @@ int main(){
     tl::expected<node *, int> returnedValue;
     node *rvalue;
 
-    DfsGraph *dfs = new DfsGraph();
-
     cout << welcomeMessage;
 
     cout << "\n\nScegli il file di input-> ";
@@ -147,6 +145,7 @@ int main(){
             }
             case 4:
                 cout << "Eseguo DFS";
+                DfsGraph *dfs = new DfsGraph();
                 dfs->DFS(1, table);
                 break;
             case 5:
