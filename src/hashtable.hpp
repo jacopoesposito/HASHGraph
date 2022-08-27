@@ -60,6 +60,7 @@ HashTable::HashTable(int table_size){
 //Method used to insert a node into the HashTable
 void HashTable::put(int key, node *value){
     if(isFull()){
+        cout << "HashTable piena" << endl;
         return;
     }
     int hash = hashFunc1(key); //Calculating the initial hash

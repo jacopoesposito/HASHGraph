@@ -15,9 +15,10 @@ private:
     int time_visit;
     int time_completation;
     string color;
-    list<int> *lista_adiacenza;
+    list<int> lista_adiacenza;
 
 public:
+    node(int value, int destination, bool visited, int time_visit, int time_completation, string color, list<int> lista_adiacenza);
     node(int value, int destination, bool visited, int time_visit, int time_completation, string color);
     node();
     ~node();
@@ -29,6 +30,7 @@ public:
     int  getTimeVisit();
     int getTimeCompletation();
     string getColor();
+    list<int> getListaAdiacenza();
 
     //Setter
     void setValue(int value);
@@ -61,6 +63,10 @@ int node::getTimeCompletation(){
 
 string node::getColor(){
     return this->color;
+}
+
+list<int> node::getListaAdiacenza(){
+    return this->lista_adiacenza;
 }
 
 void node::setValue(int value){
@@ -100,6 +106,17 @@ node::node(int value, int destination, bool visited, int time_visit, int time_co
     this->time_visit = time_visit;
     this->time_completation = time_completation;
     this->color = color;
+}
+
+node::node(int value, int destination, bool visited, int time_visit, int time_completation, string color, list<int> lista_adiacenza)
+{
+    this->value = value;
+    this->destination = destination;
+    this->visited = visited;
+    this->time_visit = time_visit;
+    this->time_completation = time_completation;
+    this->color = color;
+    this->lista_adiacenza = lista_adiacenza;
 }
 
 node::~node()
