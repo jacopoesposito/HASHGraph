@@ -24,27 +24,29 @@ DfsGraph::DfsGraph()
 }
 
 void DfsGraph::DFS(int id_nodo, HashTable *table){
-        tl::expected<node, int> returnedValue = table->searchValue(id_nodo);
+        tl::expected<node *, int> returnedValue = table->searchValue(id_nodo);
 
         if(!returnedValue.has_value()){
             cout << "Valore non trovato";
             return;
         }
 
-        node value = returnedValue.value();
-        value.setTimeVisit(time + 1);
-        value.setColor("gray");
+        node *value = returnedValue.value();
+        time+=1;
+        value->setTimeVisit(time);
+        value->setColor("gray");
 
-        list<int> list_adj = value.getListaAdiacenza();
+        list<int> list_adj = value->getListaAdiacenza();
         list<int>::iterator i;
-        for(i = list_adj.begin(); i != list_adj.end(); ++i){
-            tl::expected<node, int> adjNode = table->searchValue(*i);
-            if(returnedValue.value().getColor()=="white"){
+        for(i = list_adj.begin(); i != list_adj.end(); i++){
+            tl::expected<node *, int> adjNode = table->searchValue(*i);
+            if(adjNode.value()->getColor()=="white"){
+                cout <<"\nEsamino il vicino:"<< *i << endl;
                 DFS(*i, table);
             }
         }
-
-        value.setColor("BLACK");
-        value.setTimeCompletation(time + 1);
+        time+=1;
+        value->setColor("black");
+        value->setTimeCompletation(time);
 }
 #endif

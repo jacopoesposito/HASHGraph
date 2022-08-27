@@ -33,8 +33,8 @@ int main(){
 
     int nodeValue, nodeDestination, key, scelta, userInputDimensionTable, fileDimensionTable;
     node *value;
-    tl::expected<node, int> returnedValue;
-    node rvalue;
+    tl::expected<node *, int> returnedValue;
+    node *rvalue;
 
     DfsGraph *dfs = new DfsGraph();
 
@@ -140,8 +140,8 @@ int main(){
                 cout << left << setw(20) << "\n\nID Nodo" << left << setw(20) << "ID Destinazione" << left << setw(20) << "Visitato" 
                 << left << setw(20) << "Tem Inizio Visita"  << left << setw(20) << "Tem Fine Visita"  << left << setw(20) << "Colore" << endl;
                 
-                cout << left << setw(20) << rvalue.getValue() << left << setw(20) << rvalue.getDestination() << left << setw(20) << rvalue.getVisited() 
-                << left << setw(20) << rvalue.getTimeVisit()  << left << setw(20) << rvalue.getTimeCompletation() << left << setw(20) << rvalue.getColor() << endl;
+                cout << left << setw(20) << rvalue->getValue() << left << setw(20) << rvalue->getDestination() << left << setw(20) << rvalue->getVisited() 
+                << left << setw(20) << rvalue->getTimeVisit()  << left << setw(20) << rvalue->getTimeCompletation() << left << setw(20) << rvalue->getColor() << endl;
 
             break;
             }

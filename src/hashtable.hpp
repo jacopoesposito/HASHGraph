@@ -20,8 +20,8 @@ class HashNode{
         void setKey(int key){
             this->key = key;
         }
-        node getValue(){
-            return *value;
+        node *getValue(){
+            return value;
         }
     private:
         node *value;
@@ -41,7 +41,7 @@ class HashTable{
         int size_current;
         HashTable(int table_size);
         HashTable();
-        tl::expected<node, int> searchValue(int key);
+        tl::expected<node *, int> searchValue(int key);
         void put(int key, node *value);
         void deleteNode(int key);
         void displayHashTable();
@@ -89,7 +89,7 @@ void HashTable::put(int key, node *value){
 
 /* Method used to search an element in the HashTable given his key, it can return an expected value that is the node stored in 
 that position, or an unexpected value an error code stored into an integer*/
-tl::expected<node, int> HashTable::searchValue(int key){
+tl::expected<node *, int> HashTable::searchValue(int key){
     int hash1 = hashFunc1(key);
     int hash2 = hashFunc2(key);
     if(table[(hash1 + 0*hash2)%TABLE_SIZE] == NULL){
