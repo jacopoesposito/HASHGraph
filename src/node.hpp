@@ -39,6 +39,11 @@ public:
     void  setTimeVisit(int time_visit);
     void setTimeCompletation(int time_completation);
     void setColor(string color);
+    void setListaAdiacenza(int id_node);
+
+    void removeValueFromList(int id_node);
+
+    int findNodeInAdjList(int id_node);
 };
 
 int node::getValue(){
@@ -91,6 +96,23 @@ void node::setTimeCompletation(int time_completation){
 
 void node::setColor(string color){
     this->color = color;
+}
+
+void node::setListaAdiacenza(int id_node){
+    this->lista_adiacenza.push_back(id_node);
+}
+
+void node::removeValueFromList(int id_node){
+    this->lista_adiacenza.remove(id_node);
+}
+
+ int node::findNodeInAdjList(int id_node){
+    list<int>::iterator it = find(lista_adiacenza.begin(), lista_adiacenza.end(), id_node);
+
+    if(*it != id_node){
+        return -1;
+    }
+    return *it;
 }
 
 node::node()

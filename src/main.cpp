@@ -13,15 +13,19 @@ using namespace std;
 
 void displaymenu(){
     cout << "\n******************************************";
-    cout << "\n**         HashGraph V0.0.1             **";
+    cout << "\n**         HashGraph V0.0.2             **";
     cout << "\n** Developed by Jacopo Gennaro Esposito **";
     cout << "\n** ------------------------------------ **";
     cout << "\n**                Menu                  **";
     cout << "\n**         1) Aggiungi nodo su HT       **";
     cout << "\n**         2) Rimuovi nodo da HT        **";
     cout << "\n**         3) Trova nodo in HT          **";
-    cout << "\n**         4) Esegui DFS                **";
-    cout << "\n**         5) Esci                      **";
+    cout << "\n**         4) Aggiungi arco             **";
+    cout << "\n**         5) Rimuovi arco              **";
+    cout << "\n**         6) Trova arco                **";
+    cout << "\n**         7) Esegui DFS                **";
+    cout << "\n**         8) Mostra menu               **";
+    cout << "\n**         9) Esci                      **";
     cout << "\n******************************************";
 }
 
@@ -145,12 +149,102 @@ int main(){
             }
             case 4:
             {
+                cout << "Aggiungi arco";
+                int idPrimoNodo, idSecondoNodo;
+                tl::expected<node *, int> secondReturnedValue; 
+                cout << "\nInserisci id primo nodo->";
+                cin >> idPrimoNodo;
+                cout << "\nInserisci id secondo nodo->";
+                cin >> idSecondoNodo;
+
+                returnedValue = table->searchValue(idPrimoNodo);
+                secondReturnedValue = table->searchValue(idSecondoNodo);
+                
+                if(!returnedValue.has_value() && !secondReturnedValue.has_value()){
+                    cout << "Valore non trovato";
+                    break;
+                }
+
+                rvalue = returnedValue.value();
+                rvalue->setListaAdiacenza(idSecondoNodo);
+                rvalue = secondReturnedValue.value();
+                rvalue->setListaAdiacenza(idPrimoNodo);
+
+                cout << "\nArco aggiunto con successo";
+
+                break;
+            }
+            case 5:
+            {
+                cout << "\nRimuovi arco";
+                int idPrimoNodo, idSecondoNodo;
+                tl::expected<node *, int> secondReturnedValue; 
+                cout << "\nInserisci id primo nodo->";
+                cin >> idPrimoNodo;
+                cout << "\nInserisci id secondo nodo->";
+                cin >> idSecondoNodo;
+
+                returnedValue = table->searchValue(idPrimoNodo);
+                secondReturnedValue = table->searchValue(idSecondoNodo);
+                
+                if(!returnedValue.has_value() && !secondReturnedValue.has_value()){
+                    cout << "\nValore non trovato";
+                    break;
+                }
+
+                rvalue = returnedValue.value();
+                rvalue->removeValueFromList(idSecondoNodo);
+                rvalue = secondReturnedValue.value();
+                rvalue->removeValueFromList(idPrimoNodo);
+
+                cout << "\nArco eliminato con successo";
+
+                break;
+            }
+            case 6:
+            {
+                cout << "\nTrova arco";
+                int idPrimoNodo, idSecondoNodo;
+                tl::expected<node *, int> secondReturnedValue;
+                node *rSecondValue; 
+                cout << "\nInserisci id primo nodo->";
+                cin >> idPrimoNodo;
+                cout << "\nInserisci id secondo nodo->";
+                cin >> idSecondoNodo;
+
+                returnedValue = table->searchValue(idPrimoNodo);
+                secondReturnedValue = table->searchValue(idSecondoNodo);
+                
+                if(!returnedValue.has_value() && !secondReturnedValue.has_value()){
+                    cout << "\nValore non trovato";
+                    break;
+                }
+
+                rvalue = returnedValue.value();
+                rSecondValue = secondReturnedValue.value();
+                int valueEdge1 = rvalue->findNodeInAdjList(idSecondoNodo);
+                int valueEdge2 = rSecondValue->findNodeInAdjList(idPrimoNodo);
+
+                if((valueEdge1 == -1) || (valueEdge2 == -1)){
+                    cout << "\nArco non trovato";
+                    break;
+                }                
+
+                cout << "\nArco: " << valueEdge2 << "-" << valueEdge1;
+
+                break;
+            }
+            case 7:
+            {
                 cout << "Eseguo DFS";
                 DfsGraph *dfs = new DfsGraph();
                 dfs->DFS(table);
                 break;
             }
-            case 5:
+            case 8:
+                displaymenu();
+                break;
+            case 9:
                 exec = false;
                 cout << "Esco...";
             break;
