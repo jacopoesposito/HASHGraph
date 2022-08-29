@@ -1,3 +1,6 @@
+/*
+    Developed by Jacopo Gennaro Esposito 
+*/
 using namespace std;
 #include "iostream"
 #include <iomanip>
@@ -246,6 +249,7 @@ int main(){
                 break;
             case 9:
                 exec = false;
+                table->~HashTable();
                 cout << "Esco...";
             break;
             default:

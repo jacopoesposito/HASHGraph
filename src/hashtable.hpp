@@ -1,3 +1,7 @@
+/*
+    Developed by Jacopo Gennaro Esposito 
+*/
+
 using namespace std;
 #include "node.hpp"
 #include "../lib/expected.hpp"
@@ -41,6 +45,7 @@ class HashTable{
         int size_current;
         HashTable(int table_size);
         HashTable();
+        ~HashTable();
         tl::expected<node *, int> searchValue(int key);
         void put(int key, node *value);
         void deleteNode(int key);
@@ -55,6 +60,10 @@ HashTable::HashTable(int table_size){
     table = new HashNode*[TABLE_SIZE];
     for (int i = 0; i < TABLE_SIZE; i++)
         table[i] = NULL;
+}
+
+HashTable::~HashTable(){
+
 }
 
 //Method used to insert a node into the HashTable

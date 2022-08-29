@@ -1,3 +1,7 @@
+/*
+    Developed by Jacopo Gennaro Esposito 
+*/
+
 using namespace std;
 #include <iostream>
 #include <list>
