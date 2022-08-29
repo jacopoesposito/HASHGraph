@@ -144,10 +144,12 @@ int main(){
             break;
             }
             case 4:
+            {
                 cout << "Eseguo DFS";
                 DfsGraph *dfs = new DfsGraph();
-                dfs->DFS(1, table);
+                dfs->DFS(table);
                 break;
+            }
             case 5:
                 exec = false;
                 cout << "Esco...";
