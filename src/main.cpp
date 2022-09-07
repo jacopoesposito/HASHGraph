@@ -76,9 +76,29 @@ int main(){
     
     while(file >> idNode >> destinationNode){
         list<int> lista_adiacenza;
+        list<int> lista_adj_destNode;
+        tl::expected<node *, int> secondReturnedValue;
+
         lista_adiacenza.push_back(stoi(destinationNode));
-        table->put(i, new node(stoi(idNode), stoi(destinationNode), false, -1, -1, "white", lista_adiacenza));
-        i++;
+        lista_adj_destNode.push_back(stoi(idNode));
+
+        returnedValue = table->searchValue(stoi(idNode));
+        secondReturnedValue = table->searchValue(stoi(destinationNode));
+
+        if(!returnedValue.has_value()){
+            table->put(stoi(idNode), new node(stoi(idNode), stoi(destinationNode), false, -1, -1, "white", lista_adiacenza));
+        }
+        else{
+            rvalue = returnedValue.value();
+            rvalue->setListaAdiacenza(stoi(destinationNode));
+        }
+        if(!secondReturnedValue.has_value()){
+            table->put(stoi(destinationNode), new node(stoi(destinationNode), 0, false, -1, -1, "white", lista_adj_destNode));
+        }
+        else{
+            rvalue = secondReturnedValue.value();
+            rvalue->setListaAdiacenza(stoi(idNode));
+        }
     }
 
     displaymenu();
