@@ -102,16 +102,16 @@ tl::expected<node *, int> HashTable::searchValue(int key){
     int hash1 = hashFunc1(key);
     int hash2 = hashFunc2(key);
     if(table[(hash1 + 0*hash2)%TABLE_SIZE] == NULL){
-        return tl::unexpected(-1); //If the value in that position is NULL, than return an unexpected value of -1
+        return tl::unexpected<int>(-1); //If the value in that position is NULL, than return an unexpected value of -1
     }
 
     if(table[(hash1 + 0*hash2)%TABLE_SIZE]->getKey() == -2)
-        return tl::unexpected(-2); //If the key of the element in that position is -2, than return an unexpected value of -2
+        return tl::unexpected<int>(-2); //If the key of the element in that position is -2, than return an unexpected value of -2
 
     int i = 0;
     while(table[(hash1 + i*hash2)%TABLE_SIZE]->getKey() != key){
         if(table[(hash1 + i*hash2)%TABLE_SIZE] == NULL){
-            return tl::unexpected(-1);
+            return tl::unexpected<int>(-1);
         }
         i++;
     }

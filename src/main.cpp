@@ -33,6 +33,7 @@ void displaymenu(){
 }
 
 int main(){
+    cout << __cplusplus << endl;
     const char * welcomeMessage = "\n\n Benvenuti in HashGraph, memorizza e gestisci un grafo orientato grazie ad una hash table";
     bool exec = true;
     string inputFile, input1;
@@ -67,20 +68,19 @@ int main(){
         cout << "\n Errore tabella di Hashing troppo piccola per contenere i dati di input!" << endl;
         return -3;
     }
-
+    userInputDimensionTable+=5;
     HashTable *table = new HashTable(userInputDimensionTable);
 
     file.getline(buffer, 256);
     int i = 1;
     string idNode, destinationNode;
-    
-    while(file >> idNode >> destinationNode){
+    while(file >> idNode >> destinationNode){        
         list<int> lista_adiacenza;
         list<int> lista_adj_destNode;
         tl::expected<node *, int> secondReturnedValue;
 
         lista_adiacenza.push_back(stoi(destinationNode));
-        lista_adj_destNode.push_back(stoi(idNode));
+        //lista_adj_destNode.push_back(stoi(idNode));
 
         returnedValue = table->searchValue(stoi(idNode));
         secondReturnedValue = table->searchValue(stoi(destinationNode));
@@ -93,12 +93,14 @@ int main(){
             rvalue->setListaAdiacenza(stoi(destinationNode));
         }
         if(!secondReturnedValue.has_value()){
-            table->put(stoi(destinationNode), new node(stoi(destinationNode), 0, false, -1, -1, "white", lista_adj_destNode));
+            //Add the destination node to the HT, setting
+            //his the destination to the default value of 0
+             table->put(stoi(destinationNode), new node(stoi(destinationNode), 0, false, -1, -1, "white"));
         }
-        else{
-            rvalue = secondReturnedValue.value();
-            rvalue->setListaAdiacenza(stoi(idNode));
-        }
+        // else{
+        //     rvalue = secondReturnedValue.value();
+        //     rvalue->setListaAdiacenza(stoi(idNode));
+        // }
     }
 
     displaymenu();
@@ -183,15 +185,15 @@ int main(){
                 returnedValue = table->searchValue(idPrimoNodo);
                 secondReturnedValue = table->searchValue(idSecondoNodo);
                 
-                if(!returnedValue.has_value() && !secondReturnedValue.has_value()){
+                if(!returnedValue.has_value() || !secondReturnedValue.has_value()){
                     cout << "Valore non trovato";
                     break;
                 }
 
                 rvalue = returnedValue.value();
                 rvalue->setListaAdiacenza(idSecondoNodo);
-                rvalue = secondReturnedValue.value();
-                rvalue->setListaAdiacenza(idPrimoNodo);
+                // rvalue = secondReturnedValue.value();
+                // rvalue->setListaAdiacenza(idPrimoNodo);
 
                 cout << "\nArco aggiunto con successo";
 
@@ -208,7 +210,7 @@ int main(){
                 cin >> idSecondoNodo;
 
                 returnedValue = table->searchValue(idPrimoNodo);
-                secondReturnedValue = table->searchValue(idSecondoNodo);
+                //secondReturnedValue = table->searchValue(idSecondoNodo);
                 
                 if(!returnedValue.has_value() && !secondReturnedValue.has_value()){
                     cout << "\nValore non trovato";
@@ -217,8 +219,8 @@ int main(){
 
                 rvalue = returnedValue.value();
                 rvalue->removeValueFromList(idSecondoNodo);
-                rvalue = secondReturnedValue.value();
-                rvalue->removeValueFromList(idPrimoNodo);
+                // rvalue = secondReturnedValue.value();
+                // rvalue->removeValueFromList(idPrimoNodo);
 
                 cout << "\nArco eliminato con successo";
 
@@ -244,16 +246,16 @@ int main(){
                 }
 
                 rvalue = returnedValue.value();
-                rSecondValue = secondReturnedValue.value();
+                //rSecondValue = secondReturnedValue.value();
                 int valueEdge1 = rvalue->findNodeInAdjList(idSecondoNodo);
-                int valueEdge2 = rSecondValue->findNodeInAdjList(idPrimoNodo);
+                //int valueEdge2 = rSecondValue->findNodeInAdjList(idPrimoNodo);
 
-                if((valueEdge1 == -1) || (valueEdge2 == -1)){
+                if(valueEdge1 == -1){
                     cout << "\nArco non trovato";
                     break;
                 }                
 
-                cout << "\nArco: " << valueEdge2 << "-" << valueEdge1;
+                cout << "\nArco: " << idPrimoNodo << "-" << valueEdge1;
 
                 break;
             }

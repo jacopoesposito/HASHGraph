@@ -28,7 +28,7 @@ DfsGraph::DfsGraph()
 }
 
 void DfsGraph::DFS(HashTable *table){
-    for(int i = 1; i < table->size_current; i++){
+    for(int i = 0; i < table->size_current; i++){
         cout << "\nCerco il nodo:" << i;
         tl::expected<node *, int> returnedValue = table->searchValue(i);
 
@@ -38,8 +38,8 @@ void DfsGraph::DFS(HashTable *table){
         }
 
         node *value = returnedValue.value();
-
-        DFSVisit(i, table);
+        if(value->getColor()=="white")
+            DFSVisit(i, table);
     }
 
 }
