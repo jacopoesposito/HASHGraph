@@ -11,7 +11,7 @@ using namespace std;
 #include "dfsGraph.hpp"
 #include "hashtable.hpp"
 #include "node.hpp"
-#include "../lib/expected.hpp"
+#include "expected.hpp"
 
 
 void displaymenu(){
